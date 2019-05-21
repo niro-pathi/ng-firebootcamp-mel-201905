@@ -1,23 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Company } from '../company';
 import { CompanyService } from '../company.service';
+import { tap, takeWhile } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'fbc-company-list',
   templateUrl: './company-list.component.html',
   styleUrls: ['./company-list.component.scss']
 })
-export class CompanyListComponent implements OnInit {
-
-  // private comoanyService: CompanyService;
+export class CompanyListComponent implements OnInit{
 
   constructor(private companySvc: CompanyService) {
-    // this.comoanyService = companySvc;
   }
 
-  companies: Company[];
+  companies$: Observable<Company[]>;
+
   ngOnInit() {
-     this.companySvc.getCompanies()
-      .subscribe(c => this.companies = c);
+    this.companies$ = this.companySvc.getCompanies();
   }
 }
